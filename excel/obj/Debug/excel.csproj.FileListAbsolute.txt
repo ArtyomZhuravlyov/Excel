@@ -1,0 +1,11 @@
+C:\Users\Zhuravlev\source\repos\excel\excel\obj\Debug\excel.csprojAssemblyReference.cache
+C:\Users\Zhuravlev\source\repos\excel\excel\obj\Debug\excel.csproj.ResolveComReference.cache
+C:\Users\Zhuravlev\source\repos\excel\excel\obj\Debug\excel.Form1.resources
+C:\Users\Zhuravlev\source\repos\excel\excel\obj\Debug\excel.Properties.Resources.resources
+C:\Users\Zhuravlev\source\repos\excel\excel\obj\Debug\excel.csproj.GenerateResource.cache
+C:\Users\Zhuravlev\source\repos\excel\excel\obj\Debug\excel.csproj.CoreCompileInputs.cache
+C:\Users\Zhuravlev\source\repos\excel\excel\bin\Debug\excel.exe.config
+C:\Users\Zhuravlev\source\repos\excel\excel\bin\Debug\excel.exe
+C:\Users\Zhuravlev\source\repos\excel\excel\bin\Debug\excel.pdb
+C:\Users\Zhuravlev\source\repos\excel\excel\obj\Debug\excel.exe
+C:\Users\Zhuravlev\source\repos\excel\excel\obj\Debug\excel.pdb
