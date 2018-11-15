@@ -31,7 +31,7 @@ namespace excel
         {
             int i = Convert.ToInt32(((Button)(sender)).Tag);
             switch (i)
-            {
+            { //интересненько
                 case 1:
                     excelapp = new Excel.Application();
                     excelapp.Visible = true; 
