@@ -1,4 +1,4 @@
-﻿using System;
+﻿ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -16,6 +16,8 @@ namespace excel
         private Excel.Application excelapp;
         private Excel.Workbooks excelappworkbooks;
         private Excel.Workbook excelappworkbook;
+
+        private OpenFileDialog dlg = new OpenFileDialog();
 
         public Form1()
         {
@@ -65,6 +67,38 @@ namespace excel
                     Close();
                     break;
             }
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+
+
+
+            dlg.Multiselect = true;
+            dlg.Title = "Выберите файлы";
+            dlg.InitialDirectory = @"C:\Users\";
+            //один из вариантов хорошей записи
+            //OpenFileDialog dlg = new OpenFileDialog
+            //{
+            //    Multiselect = true,
+            //    Title = "Выберите файлы",
+            //    InitialDirectory = @"C:\"
+            //};
+            //dlg.ShowDialog();
+            dlg.ShowDialog();
+            // пользователь вышел из диалога ничего не выбрав
+            if (dlg.FileName == String.Empty)
+                return;
+
+            textBox1.Visible = true;
+            int kk = 0;
+            foreach (string file in dlg.FileNames)
+            {
+                kk++;
+                textBox1.Text += file +"\r\n"+ "\r\n";
+                //MessageBox.Show(file);
+            }
+
         }
     }
 }
