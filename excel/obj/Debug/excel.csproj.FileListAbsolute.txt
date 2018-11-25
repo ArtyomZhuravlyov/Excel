@@ -20,3 +20,14 @@ C:\Users\Zhuravlev\source\repos\excel2\Excel\excel\obj\Debug\excel.csproj.Genera
 C:\Users\Zhuravlev\source\repos\excel2\Excel\excel\obj\Debug\excel.csproj.CoreCompileInputs.cache
 C:\Users\Zhuravlev\source\repos\excel2\Excel\excel\obj\Debug\excel.exe
 C:\Users\Zhuravlev\source\repos\excel2\Excel\excel\obj\Debug\excel.pdb
+C:\Users\Артём\Documents\Visual Studio 2017\Projects\Excel_charts\Excel\excel\bin\Debug\excel.exe.config
+C:\Users\Артём\Documents\Visual Studio 2017\Projects\Excel_charts\Excel\excel\bin\Debug\excel.exe
+C:\Users\Артём\Documents\Visual Studio 2017\Projects\Excel_charts\Excel\excel\bin\Debug\excel.pdb
+C:\Users\Артём\Documents\Visual Studio 2017\Projects\Excel_charts\Excel\excel\obj\Debug\excel.csprojResolveAssemblyReference.cache
+C:\Users\Артём\Documents\Visual Studio 2017\Projects\Excel_charts\Excel\excel\obj\Debug\excel.csproj.ResolveComReference.cache
+C:\Users\Артём\Documents\Visual Studio 2017\Projects\Excel_charts\Excel\excel\obj\Debug\excel.Form1.resources
+C:\Users\Артём\Documents\Visual Studio 2017\Projects\Excel_charts\Excel\excel\obj\Debug\excel.Properties.Resources.resources
+C:\Users\Артём\Documents\Visual Studio 2017\Projects\Excel_charts\Excel\excel\obj\Debug\excel.csproj.GenerateResource.Cache
+C:\Users\Артём\Documents\Visual Studio 2017\Projects\Excel_charts\Excel\excel\obj\Debug\excel.csproj.CoreCompileInputs.cache
+C:\Users\Артём\Documents\Visual Studio 2017\Projects\Excel_charts\Excel\excel\obj\Debug\excel.exe
+C:\Users\Артём\Documents\Visual Studio 2017\Projects\Excel_charts\Excel\excel\obj\Debug\excel.pdb
