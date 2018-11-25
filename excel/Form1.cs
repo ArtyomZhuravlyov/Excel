@@ -35,7 +35,8 @@ namespace excel
         private int CountCells; // количество ячеек в этом диапазоне 
 
         //текущее количество пройденных ячеек
-        static int CountCurentCell = 1; //для тройного цикла (переключения ячеек) //1 потому что excelcells2[1, 1] начинается с 1
+        private int CountCurentCell = 1; //для тройного цикла (переключения ячеек) //1 потому что excelcells2[1, 1] начинается с 1
+        private int CountCurentCellback;
 
         public struct SDatas
         {
@@ -127,12 +128,14 @@ namespace excel
                     excelcells2.Value2 = excelcells.Value2; // забираем число
 
                     /***************************чтение диапазона ячеек и cчёт количества ячеек***************************/
-                    InceptionRange =  textBox1.Text; //начало диапазона
+                    InceptionRange =  textBox1.Text; //начало диапазона //большое число//пример 20
                     EndRange = textBox2.Text; //конец диапазона
                     CountCells = Convert.ToInt32(textBox1.Text) - Convert.ToInt32(textBox2.Text) + 1; //количчетсво ячеек диапазона
+                    CountCurentCellback = CountCells; // необходимо для переворота ибо значения идёт снизу вверх //обратный счётчик
                     label1.Text = CountCells.ToString();
-                    label6.Text = InceptionRange;
-                    excelcells2 = excelworksheet.get_Range("D" + InceptionRange, "D" + EndRange);
+                    
+                    excelcells2 = excelworksheet.get_Range("B" + EndRange, "B" + EndRange);
+
                     //excelcells2[1, 1].EntireColumn.NumberFormat = "мм:сс";
                     int CountHour = CountCells / 12 / 60; //12 т.к. в 1 мин 5сек по 12 раз //60 минут в часе
 
@@ -146,8 +149,13 @@ namespace excel
                    excelappworkbooknew = excelappworkbooks[2]; ////Получаем ссылку на книгу 1 - нумерация от 1
                    excelsheetsnew = excelappworkbooknew.Worksheets;   //Получаем массив ссылок на листы выбранной книги
                    excelworksheetnew = (Excel.Worksheet)excelsheetsnew.get_Item(1); //получаем ссылку на первый лист
-                   excelcellsnew = excelworksheetnew.get_Range("N" + "11", "N11");
+                   excelcellsnew = excelworksheetnew.get_Range("B" + EndRange, "B" + EndRange); //куда будет записываться
 
+                    //что нужно реализовать
+                    //1 подсчёт уол-ва файлов ИПТ и БУ отдельно
+                    //запись значений вынести как отдельную функцию
+                    //с помощью свитча отправлять определённое кол-во раз в эту функцию
+                    // менять куда будет записываться в виде аргументов в зависимости от свитча
                     /*****************************Запись времени и значений***************************************************/
                     for (int ih = 0; ih <= CountHour; ih++)
                     {  
@@ -155,10 +163,13 @@ namespace excel
                         {
                             for(int isec = 0; isec < (12); isec++)
                             {
-                                if (CountCurentCell == CountCells) break;
-                                //excelcellsnew[CountCurentCell, 1].Value2 = Stime.hours[ih] + ":" + Stime.minutes[im] + ":" + Stime.seconds_05[isec];
-                                excelcellsnew[CountCurentCell, 1].Value2 = Stime.hours[ih] + ":" + Stime.minutes[im] + ":" + Stime.seconds_05[isec];
+                                if ((CountCurentCell-1) == CountCells) break;
+                                excelcellsnew[CountCurentCell, 4].Value2 = excelcells2[CountCurentCellback, 4].Value2;// Т_3
+                                excelcellsnew[CountCurentCell, 3].Value2 = excelcells2[CountCurentCellback, 3].Value2; //D:D //Т_0
+                                excelcellsnew[CountCurentCell, 1].Value2 = excelcells2[CountCurentCellback, 2].Value2;//Bnew:C //время датчика
+                                excelcellsnew[CountCurentCell, 2].Value2 = Stime.hours[ih] + ":" + Stime.minutes[im] + ":" + Stime.seconds_05[isec];
                                 CountCurentCell++;
+                                CountCurentCellback--;
                             }
                         }
 
