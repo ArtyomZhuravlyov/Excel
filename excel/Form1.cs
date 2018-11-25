@@ -35,6 +35,12 @@ namespace excel
             public static string[] PathFile = new string[6];
             public static int QuantityFiles = 0;
         }
+
+        public struct Stime
+        {
+            public static string[] second = {"00", "05", "10" , "15" , "20"  };
+        }
+
         public Form1()
         {
             InitializeComponent();
@@ -52,7 +58,8 @@ namespace excel
             SItemsListBox.QuantityFiles = 1; //!! временно
             if (SItemsListBox.QuantityFiles == 0 && i == 1 ) return; //i=1 первая кнопка 
                                                                      //разобраться почему не сработало String.Empty
-            SItemsListBox.PathFile[0] = @"C:\Users\Zhuravlev\Desktop\для проги\ИПТ4.xlsx"; //исправить в будущем
+              // SItemsListBox.PathFile[0] = @"C:\Users\Zhuravlev\Desktop\для проги\ИПТ4.xlsx"; //исправить в будущем
+            SItemsListBox.PathFile[0] = @"C:\Users\Артём\Desktop\для тестов";
             label1.Text = SItemsListBox.PathFile[0];
             switch (i)
             {
@@ -83,45 +90,37 @@ namespace excel
                     //выбираю нужный формат
                     excelcells = excelworksheet.get_Range("C11", "C11");
                     //excelcells.NumberFormat = "ДД.ММ.ГГГГ ч:мм";
-                    label1.Text = Convert.ToString(excelcells.NumberFormat);
+                    // label1.Text = Convert.ToString(excelcells.NumberFormat);
+                    label1.Text = (excelcells.NumberFormat).ToString();
                     //excelcells.Clear();
                     // excelcells.NumberFormat = "ДД.ММ.ГГГГ ч:мм:cc" ; // "Д ММММ, ГГГГ"
                     //excelcells.Value2 = "19.11.2018  16:54:00";
                     // копируем из одного ряда в другой
-                    excelcells2 = excelworksheet.get_Range("O"+"11", "O11");
+                    excelcells2 = excelworksheet.get_Range("O"+"11", "O11"); // вы
                     excelcells2.Clear();
                     //excelcells2.NumberFormat = "ДД.ММ.ГГГГ ч:мм:cc"; // "Д ММММ, ГГГГ"
                     excelcells2.NumberFormat = excelcells.NumberFormat; //забираем формат
                     excelcells2.Value2 = excelcells.Value2; // забираем число
+
+                    /***************************cчёт количества ячеек и запись времени***************************/
+
+                    int CountCells = Convert.ToInt32(textBox1.Text) - Convert.ToInt32(textBox2.Text) + 1;
+                    label1.Text = CountCells.ToString();
+                    excelcells2 = excelworksheet.get_Range("O" + "11", "O11");
+                    excelcells2[1, 1].EntireColumn.NumberFormat = "мм:сс";
+                   
+                    // excelcells2[1, 1].EntireColumn.NumberFormat = "мм:сс";
+                    //      sheet.Cells[1, "A"].Value2 = "Id"; 
                     
+                    excelcells2[1, 1].Value2 = Stime.second[0] + ":" + Stime.second[0] + ":" + Stime.second[1];
+                    // excelcells2[1, 6].Value2 = Stime.second[1];
+
                     /* потом вернуть
                     //создание 
                     excelapp.SheetsInNewWorkbook = 1;
                     excelapp.Workbooks.Add(Type.Missing);
                     */
-                    ////Выбираем лист 2
-                    //excelworksheet = (Excel.Worksheet)excelsheets.get_Item(2);
-                    ////При выборе одной ячейки можно не указывать вторую границу 
-                    //excelcells = excelworksheet.get_Range("A1", Type.Missing);
-                    ////Выводим значение текстовую строку
-                    //excelcells.Value2 = "Лист 2";
-                    //excelcells.Font.Size = 20;
-                    //excelcells.Font.Italic = true;
-                    //excelcells.Font.Bold = true;
-                    ////Выбираем лист 3
-                    //excelworksheet = (Excel.Worksheet)excelsheets.get_Item(3);
-                    ////Делаем третий лист активным
-                    //excelworksheet.Activate();
-                    ////Вывод в ячейки используя номер строки и столбца Cells[строка, столбец]
-                    //for (m = 1; m < 20; m++)
-                    //{
-                    //    for (n = 1; n < 15; n++)
-                    //    {
-                    //        excelcells = (Excel.Range)excelworksheet.Cells[m, n];
-                    //        //Выводим координаты ячеек
-                    //        excelcells.Value2 = m.ToString() + " " + n.ToString();
-                    //    }
-                    //}
+
                     break;
                 case 2:
                    // excelapp.Quit();
@@ -207,5 +206,82 @@ namespace excel
 
             }
         }
+
+        
     }
 }
+
+
+
+//sheet = wb.Sheets.Add(); 
+//      sheet.Name = "TestSheet1"; 
+//      sheet.Cells[1, "A"].Value2 = "Id"; 
+//      sheet.Cells[1, "B"].Value2 = "Name"; 
+
+
+
+////Если бы мы открыли несколько книг, то получили ссылку так
+////excelappworkbook=excelappworkbooks[1];
+////Получаем массив ссылок на листы выбранной книги
+//excelsheets = excelappworkbook.Worksheets;
+
+
+
+//                    //Получаем ссылку на лист 1
+//                    excelworksheet = (Excel.Worksheet) excelsheets.get_Item(1);
+////Выбираем ряд для времени!!!!!!!!!!!
+//excelcells = excelworksheet.get_Range("A1", "D1");
+//                    excelcells = excelworksheet.get_Range("H11", "H11");
+//                    label1.Text = Convert.ToString(excelcells.Value2);  //получаем число из экселя
+
+
+
+//                    //Выводим число
+//                    excelcells = excelworksheet.get_Range("E11", "H11");
+//                    excelcells.Value2 = 10.5;
+//                    //выбираю нужный формат
+//                    excelcells = excelworksheet.get_Range("C11", "C11");
+//                    //excelcells.NumberFormat = "ДД.ММ.ГГГГ ч:мм";
+//                    // label1.Text = Convert.ToString(excelcells.NumberFormat);
+//                    label1.Text = (excelcells.NumberFormat).ToString();
+////excelcells.Clear();
+//// excelcells.NumberFormat = "ДД.ММ.ГГГГ ч:мм:cc" ; // "Д ММММ, ГГГГ"
+////excelcells.Value2 = "19.11.2018  16:54:00";
+//// копируем из одного ряда в другой
+//excelcells2 = excelworksheet.get_Range("O"+"11", "O11");
+//                    excelcells2.Clear();
+//                    //excelcells2.NumberFormat = "ДД.ММ.ГГГГ ч:мм:cc"; // "Д ММММ, ГГГГ"
+//                    excelcells2.NumberFormat = excelcells.NumberFormat; //забираем формат
+//                    excelcells2.Value2 = excelcells.Value2; // забираем число
+                    
+//                    /* потом вернуть
+//                    //создание 
+//                    excelapp.SheetsInNewWorkbook = 1;
+//                    excelapp.Workbooks.Add(Type.Missing);
+//                    */
+
+
+
+//                    ////Выбираем лист 2
+//                    //excelworksheet = (Excel.Worksheet)excelsheets.get_Item(2);
+//                    ////При выборе одной ячейки можно не указывать вторую границу 
+//                    //excelcells = excelworksheet.get_Range("A1", Type.Missing);
+//                    ////Выводим значение текстовую строку
+//                    //excelcells.Value2 = "Лист 2";
+//                    //excelcells.Font.Size = 20;
+//                    //excelcells.Font.Italic = true;
+//                    //excelcells.Font.Bold = true;
+//                    ////Выбираем лист 3
+//                    //excelworksheet = (Excel.Worksheet)excelsheets.get_Item(3);
+//                    ////Делаем третий лист активным
+//                    //excelworksheet.Activate();
+//                    ////Вывод в ячейки используя номер строки и столбца Cells[строка, столбец]
+//                    //for (m = 1; m < 20; m++)
+//                    //{
+//                    //    for (n = 1; n < 15; n++)
+//                    //    {
+//                    //        excelcells = (Excel.Range)excelworksheet.Cells[m, n];
+//                    //        //Выводим координаты ячеек
+//                    //        excelcells.Value2 = m.ToString() + " " + n.ToString();
+//                    //    }
+//                    //}
