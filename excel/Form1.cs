@@ -12,14 +12,31 @@ using Excel = Microsoft.Office.Interop.Excel;
 namespace excel
 {
     public partial class Form1 : Form
-    {
+    {    //общее //приложение и книги
         private Excel.Application excelapp;
         private Excel.Workbooks excelappworkbooks;
+
+        //книга , листы и ячейки
         private Excel.Workbook excelappworkbook;
         private Excel.Sheets excelsheets;
         private Excel.Worksheet excelworksheet;
         private Excel.Range excelcells;
         private Excel.Range excelcells2;
+
+        //книга , листы и ячейки
+        private Excel.Workbook excelappworkbooknew;
+        private Excel.Sheets excelsheetsnew;
+        private Excel.Worksheet excelworksheetnew;
+        private Excel.Range excelcellsnew;
+
+        //определение диапазона
+        private string InceptionRange; //чтение с текстбокс
+        private string EndRange;
+        private int CountCells; // количество ячеек в этом диапазоне 
+
+        //текущее количество пройденных ячеек
+        private int CountCurentCell = 1; //для тройного цикла (переключения ячеек) //1 потому что excelcells2[1, 1] начинается с 1
+        private int CountCurentCellback;
 
         public struct SDatas
         {
@@ -38,7 +55,14 @@ namespace excel
 
         public struct Stime
         {
-            public static string[] second = {"00", "05", "10" , "15" , "20"  };
+            public static string[] seconds_05 = {"00", "05", "10" , "15" , "20", "25", "30","35", "40","45", "50", "55" };
+            public static string[] minutes = { "0", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10",
+                                               "11", "12", "13", "14", "15", "16", "17", "18", "19", "20",
+                                               "21", "22", "23", "24", "25", "26", "27", "28", "29", "30",
+                                               "31", "32", "33", "34", "35", "36", "37", "38", "39", "40",
+                                               "41", "42", "43", "44", "45", "46", "47", "48", "49", "50",
+                                               "51", "52", "53", "54", "55", "56", "57", "58", "59"};
+            public static string[] hours = { "00", "01", "02" };
         }
 
         public Form1()
@@ -53,7 +77,7 @@ namespace excel
 
         private void button1_Click(object sender, EventArgs e)
         {
-            int m, n;
+            
             int i = Convert.ToInt32(((Button)(sender)).Tag);
             SItemsListBox.QuantityFiles = 1; //!! временно
             if (SItemsListBox.QuantityFiles == 0 && i == 1 ) return; //i=1 первая кнопка 
@@ -61,6 +85,7 @@ namespace excel
               // SItemsListBox.PathFile[0] = @"C:\Users\Zhuravlev\Desktop\для проги\ИПТ4.xlsx"; //исправить в будущем
             SItemsListBox.PathFile[0] = @"C:\Users\Артём\Desktop\для тестов";
             label1.Text = SItemsListBox.PathFile[0];
+            
             switch (i)
             {
                 case 1:
@@ -81,7 +106,7 @@ namespace excel
                     //Получаем ссылку на лист 1
                     excelworksheet = (Excel.Worksheet)excelsheets.get_Item(1);
                              //Выбираем ряд для времени!!!!!!!!!!!
-                    excelcells = excelworksheet.get_Range("A1", "D1");
+                    
                     excelcells = excelworksheet.get_Range("H11", "H11");
                     label1.Text = Convert.ToString(excelcells.Value2);  //получаем число из экселя
                     //Выводим число
@@ -102,17 +127,55 @@ namespace excel
                     excelcells2.NumberFormat = excelcells.NumberFormat; //забираем формат
                     excelcells2.Value2 = excelcells.Value2; // забираем число
 
-                    /***************************cчёт количества ячеек и запись времени***************************/
-
-                    int CountCells = Convert.ToInt32(textBox1.Text) - Convert.ToInt32(textBox2.Text) + 1;
+                    /***************************чтение диапазона ячеек и cчёт количества ячеек***************************/
+                    InceptionRange =  textBox1.Text; //начало диапазона //большое число//пример 20
+                    EndRange = textBox2.Text; //конец диапазона
+                    CountCells = Convert.ToInt32(textBox1.Text) - Convert.ToInt32(textBox2.Text) + 1; //количчетсво ячеек диапазона
+                    CountCurentCellback = CountCells; // необходимо для переворота ибо значения идёт снизу вверх //обратный счётчик
                     label1.Text = CountCells.ToString();
-                    excelcells2 = excelworksheet.get_Range("O" + "11", "O11");
-                    excelcells2[1, 1].EntireColumn.NumberFormat = "мм:сс";
-                   
+                    
+                    excelcells2 = excelworksheet.get_Range("B" + EndRange, "B" + EndRange);
+
+                    //excelcells2[1, 1].EntireColumn.NumberFormat = "мм:сс";
+                    int CountHour = CountCells / 12 / 60; //12 т.к. в 1 мин 5сек по 12 раз //60 минут в часе
+
+                    //int CountSeconds = CountCells % 12;
                     // excelcells2[1, 1].EntireColumn.NumberFormat = "мм:сс";
                     //      sheet.Cells[1, "A"].Value2 = "Id"; 
-                    
-                    excelcells2[1, 1].Value2 = Stime.second[0] + ":" + Stime.second[0] + ":" + Stime.second[1];
+
+                   /*****************************Создание новой пустой книги***************************************************/
+                   excelapp.SheetsInNewWorkbook = 1; //1 количество листов в новой книге
+                   excelapp.Workbooks.Add(Type.Missing);
+                   excelappworkbooknew = excelappworkbooks[2]; ////Получаем ссылку на книгу 1 - нумерация от 1
+                   excelsheetsnew = excelappworkbooknew.Worksheets;   //Получаем массив ссылок на листы выбранной книги
+                   excelworksheetnew = (Excel.Worksheet)excelsheetsnew.get_Item(1); //получаем ссылку на первый лист
+                   excelcellsnew = excelworksheetnew.get_Range("B" + EndRange, "B" + EndRange); //куда будет записываться
+
+                    //что нужно реализовать
+                    //1 подсчёт уол-ва файлов ИПТ и БУ отдельно
+                    //запись значений вынести как отдельную функцию
+                    //с помощью свитча отправлять определённое кол-во раз в эту функцию
+                    // менять куда будет записываться в виде аргументов в зависимости от свитча
+                    /*****************************Запись времени и значений***************************************************/
+                    for (int ih = 0; ih <= CountHour; ih++)
+                    {  
+                        for(int im = 0; im < (60); im++)
+                        {
+                            for(int isec = 0; isec < (12); isec++)
+                            {
+                                if ((CountCurentCell-1) == CountCells) break;
+                                excelcellsnew[CountCurentCell, 4].Value2 = excelcells2[CountCurentCellback, 4].Value2;// Т_3
+                                excelcellsnew[CountCurentCell, 3].Value2 = excelcells2[CountCurentCellback, 3].Value2; //D:D //Т_0
+                                excelcellsnew[CountCurentCell, 1].Value2 = excelcells2[CountCurentCellback, 2].Value2;//Bnew:C //время датчика
+                                excelcellsnew[CountCurentCell, 2].Value2 = Stime.hours[ih] + ":" + Stime.minutes[im] + ":" + Stime.seconds_05[isec];
+                                CountCurentCell++;
+                                CountCurentCellback--;
+                            }
+                        }
+
+                    }
+                    //excelcells2[1, 1].Value2 = Stime.seconds[0] + ":" + Stime.seconds[0] + ":" + Stime.seconds[1];
+                    //excelcells2[2, 1].Value2 = Stime.seconds[0] + ":" + Stime.seconds[0] + ":" + Stime.seconds[1];
                     // excelcells2[1, 6].Value2 = Stime.second[1];
 
                     /* потом вернуть
@@ -120,7 +183,7 @@ namespace excel
                     excelapp.SheetsInNewWorkbook = 1;
                     excelapp.Workbooks.Add(Type.Missing);
                     */
-
+                    
                     break;
                 case 2:
                    // excelapp.Quit();
