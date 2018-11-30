@@ -163,14 +163,8 @@ namespace excel
                     CountCurentCellback = CountCells; // необходимо для переворота ибо значения идёт снизу вверх //обратный счётчик
                     label1.Text = CountCells.ToString();
                     
-                    excelcells2 = excelworksheet.get_Range("B" + EndRange, "B" + EndRange);
-
-                    //excelcells2[1, 1].EntireColumn.NumberFormat = "мм:сс";
-                    //!!!!! проверить !! CountHour = CountCells / 12 / 60; //12 т.к. в 1 мин 5сек по 12 раз //60 минут в часе
-
-                    //int CountSeconds = CountCells % 12;
-                    // excelcells2[1, 1].EntireColumn.NumberFormat = "мм:сс";
-                    //      sheet.Cells[1, "A"].Value2 = "Id"; 
+                    excelcells2 = excelworksheet.get_Range("B" + EndRange, "B" + EndRange); //откуда смотрим ячейки
+                    
 
                    /*****************************Создание новой пустой книги***************************************************/
                    excelapp.SheetsInNewWorkbook = 1; //1 количество листов в новой книге
@@ -294,6 +288,30 @@ namespace excel
 
                         excelcellsnew[CountCurentCell, 1 + offset].EntireColumn.NumberFormat = "[$-ru-RU,1] ДД.ММ.ГГГГ ч:мм:сс";
                          excelcellsnew[CountCurentCell, 1 + offset].Value2 = excelcells2[CountCurentCellback, 2].Value2;//Bnew:C //время датчика
+                        excelcellsnew[CountCurentCell, 2 + offset].Value2 = Stime.hours[ih] + ":" + Stime.minutes[im] + ":" + Stime.seconds_05[isec];
+                        CountCurentCell++;
+                        CountCurentCellback--;
+                    }
+                }
+
+            }
+        }
+        /*****************************Запись времени и значений для БУ***************************************************/
+        void writtenBU(int offset) // в аргументе смещение потому что будет записываться столбцы от каждого прибора и надо их свдвигать вправо
+        {
+            for (int ih = 0; ih <= 1; ih++)
+            {
+                if ((CountCurentCell - 1) == CountCells) break;
+                for (int im = 0; im < (60); im++)
+                {
+                    if ((CountCurentCell - 1) == CountCells) break;
+                    for (int isec = 0; isec < (12); isec++)
+                    {
+                        if ((CountCurentCell - 1) == CountCells) break;
+                        //excelcellsnew[CountCurentCell, 6 + offset].Value2 = excelcells2[CountCurentCellback, 6].Value2;// Т_3
+                        excelcellsnew[CountCurentCell, 5 + offset].Value2 = excelcells2[CountCurentCellback, 5].Value2; //D:D //Т
+                        excelcellsnew[CountCurentCell, 1 + offset].EntireColumn.NumberFormat = "[$-ru-RU,1] ДД.ММ.ГГГГ ч:мм:сс";
+                        excelcellsnew[CountCurentCell, 1 + offset].Value2 = excelcells2[CountCurentCellback, 2].Value2;//Bnew:C //время датчика
                         excelcellsnew[CountCurentCell, 2 + offset].Value2 = Stime.hours[ih] + ":" + Stime.minutes[im] + ":" + Stime.seconds_05[isec];
                         CountCurentCell++;
                         CountCurentCellback--;
