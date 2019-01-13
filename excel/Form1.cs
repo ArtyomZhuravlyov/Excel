@@ -1,11 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using Excel = Microsoft.Office.Interop.Excel;
 using System.Reflection; //необходимо было для использования Missing.Value
@@ -416,7 +410,7 @@ namespace excel
                         if ((CountCurentCell-2) == CountCells) break;
                         excelcellsnew[CountCurentCell, 4 + offset].Value2 = excelcells2[CountCurentCellback, 6].Value2;// Т_3
                         excelcellsnew[CountCurentCell, 3 + offset].Value2 = excelcells2[CountCurentCellback, 5].Value2; //D:D //Т_0
-
+                        
                         excelcellsnew[CountCurentCell, 1 + offset].EntireColumn.NumberFormat = "[$-ru-RU,1] ДД.ММ.ГГГГ ч:мм:сс";
                         excelcellsnew[CountCurentCell, 1 + offset].Value2 = excelcells2[CountCurentCellback, 2].Value2;//Bnew:C //время датчика
 
@@ -737,7 +731,7 @@ namespace excel
                 String seriesName3;
                 seriesName3 = BU.Items[j];
                 if (seriesName3.IndexOf(xlsx) > -1) seriesName3 = seriesName3.Replace(xlsx, "");
-                //  лучше использовать  - files[i].EndsWith(".exe")) для определения заканчитвается ли строка на .exe
+                //  лучше использовать  - if (files[i].EndsWith(".exe")) для определения заканчитвается ли строка на .exe
                 oSeries.Name = seriesName3;
             }
 
